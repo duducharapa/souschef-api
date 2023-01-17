@@ -1,6 +1,5 @@
 package com.charapadev.secondchef.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -27,8 +26,6 @@ public class User {
 
     @Column
     @ToString.Exclude
-    // TODO: Remove this annotation when introduced DTOs to return responses
-    @JsonIgnore
     private String password;
 
     @Override

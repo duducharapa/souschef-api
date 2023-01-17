@@ -1,7 +1,7 @@
 package com.charapadev.secondchef.controllers;
 
 import com.charapadev.secondchef.dtos.CreateRecipeDTO;
-import com.charapadev.secondchef.models.Recipe;
+import com.charapadev.secondchef.dtos.ShowRecipeDTO;
 import com.charapadev.secondchef.services.RecipeService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +23,22 @@ public class RecipeController {
     private RecipeService recipeService;
 
     @GetMapping
-    public ResponseEntity<List<Recipe>> list() {
-        List<Recipe> recipes = recipeService.findAll();
+    public ResponseEntity<List<ShowRecipeDTO>> list() {
+        List<ShowRecipeDTO> recipes = recipeService.findAll();
 
         return ResponseEntity.ok(recipes);
     }
 
     @PostMapping
-    public ResponseEntity<Recipe> create(@Valid @RequestBody CreateRecipeDTO createDTO) {
-        Recipe recipeCreated = recipeService.create(createDTO);
+    public ResponseEntity<ShowRecipeDTO> create(@Valid @RequestBody CreateRecipeDTO createDTO) {
+        ShowRecipeDTO recipeCreated = recipeService.create(createDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeCreated);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Recipe> findOne(@PathVariable("id") UUID recipeId) {
-        Recipe recipeFound = recipeService.findOne(recipeId);
+    public ResponseEntity<ShowRecipeDTO> findOne(@PathVariable("id") UUID recipeId) {
+        ShowRecipeDTO recipeFound = recipeService.findOneToShow(recipeId);
 
         return ResponseEntity.ok(recipeFound);
     }

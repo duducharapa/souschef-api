@@ -1,7 +1,7 @@
 package com.charapadev.secondchef.controllers;
 
 import com.charapadev.secondchef.dtos.CreateUserDTO;
-import com.charapadev.secondchef.models.User;
+import com.charapadev.secondchef.dtos.ShowUserDTO;
 import com.charapadev.secondchef.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +23,22 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> list() {
-        List<User> users = userService.findAll();
+    public ResponseEntity<List<ShowUserDTO>> list() {
+        List<ShowUserDTO> users = userService.findAll();
 
         return ResponseEntity.ok(users);
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody @Valid CreateUserDTO createDTO) {
-        User createdUser = userService.create(createDTO);
+    public ResponseEntity<ShowUserDTO> create(@RequestBody @Valid CreateUserDTO createDTO) {
+        ShowUserDTO createdUser = userService.create(createDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findOne(@PathVariable("id") UUID userId) {
-        User userFound = userService.findOne(userId);
+    public ResponseEntity<ShowUserDTO> findOne(@PathVariable("id") UUID userId) {
+        ShowUserDTO userFound = userService.findOneToShow(userId);
 
         return ResponseEntity.ok(userFound);
     }

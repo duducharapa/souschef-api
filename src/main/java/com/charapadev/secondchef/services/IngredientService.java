@@ -1,6 +1,7 @@
 package com.charapadev.secondchef.services;
 
 import com.charapadev.secondchef.dtos.CreateIngredientDTO;
+import com.charapadev.secondchef.dtos.ShowIngredientDTO;
 import com.charapadev.secondchef.models.Ingredient;
 import com.charapadev.secondchef.models.Product;
 import com.charapadev.secondchef.models.Recipe;
@@ -37,6 +38,14 @@ public class IngredientService {
         log.info("Created a ingredient: {}", ingredientToCreate);
 
         return ingredientToCreate;
+    }
+
+    public ShowIngredientDTO convertToShow(Ingredient ingredient) {
+        return new ShowIngredientDTO(
+            ingredient.getId(),
+            ingredient.getProduct().getName(),
+            ingredient.getQuantity()
+        );
     }
 
 }

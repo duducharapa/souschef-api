@@ -1,6 +1,5 @@
 package com.charapadev.secondchef.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -25,13 +24,10 @@ public class Ingredient {
     @Column
     private long quantity;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-    @ToString.Exclude
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
