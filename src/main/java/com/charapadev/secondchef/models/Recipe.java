@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -23,6 +24,10 @@ public class Recipe {
 
     @Column
     private String name;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "recipe")
+    private Set<Ingredient> ingredients;
 
     @Override
     public boolean equals(Object o) {
