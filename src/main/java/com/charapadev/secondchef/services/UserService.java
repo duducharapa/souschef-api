@@ -6,6 +6,8 @@ import com.charapadev.secondchef.models.User;
 import com.charapadev.secondchef.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +22,15 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public ShowUserDTO create(CreateUserDTO createDTO) {
+        String encodedPass = passwordEncoder.encode(createDTO.password());
+
         User userToCreate = User.builder()
             .email(createDTO.email())
-            .password(createDTO.password())
+            .password(encodedPass)
             .build();
 
         userToCreate = userRepository.save(userToCreate);
