@@ -25,6 +25,14 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private void isUnique(User user) throws RuntimeException {
+        boolean userAlreadyExists = userRepository.existsByEmail(user.getEmail());
+
+        if (userAlreadyExists) {
+            throw new RuntimeException("User already exists");
+        }
+    }
+
     public ShowUserDTO create(CreateUserDTO createDTO) {
         String encodedPass = passwordEncoder.encode(createDTO.password());
 
@@ -32,6 +40,8 @@ public class UserService {
             .email(createDTO.email())
             .password(encodedPass)
             .build();
+
+        isUnique(userToCreate);
 
         userToCreate = userRepository.save(userToCreate);
         log.info("Created an user: {}", userToCreate);
