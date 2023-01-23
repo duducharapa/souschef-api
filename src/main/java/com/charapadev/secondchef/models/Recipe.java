@@ -22,7 +22,7 @@ public class Recipe {
     @GeneratedValue
     private UUID id;
 
-    @Column
+    @Column(unique = true)
     private String name;
 
     @ToString.Exclude

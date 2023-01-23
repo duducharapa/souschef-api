@@ -46,10 +46,20 @@ public class RecipeService {
             .toList();
     }
 
+    public void isUnique(Recipe recipe) {
+        boolean recipeAlreadyExists = recipeRepository.existsByName(recipe.getName());
+
+        if (recipeAlreadyExists) {
+            throw new RuntimeException("This recipe already exists");
+        }
+    }
+
     public ShowRecipeDTO create(CreateRecipeDTO createDTO) {
         Recipe recipeToCreate = Recipe.builder()
             .name(createDTO.name())
             .build();
+
+        isUnique(recipeToCreate);
 
         recipeToCreate = recipeRepository.save(recipeToCreate);
         createRelatedIngredients(createDTO.ingredients(), recipeToCreate);
