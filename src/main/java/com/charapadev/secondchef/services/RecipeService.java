@@ -46,7 +46,7 @@ public class RecipeService {
             .toList();
     }
 
-    public void isUnique(Recipe recipe) {
+    private void isUnique(Recipe recipe) throws RuntimeException {
         boolean recipeAlreadyExists = recipeRepository.existsByName(recipe.getName());
 
         if (recipeAlreadyExists) {
