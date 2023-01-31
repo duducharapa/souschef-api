@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -57,13 +58,12 @@ public class UserService {
             .toList();
     }
 
-    public User findOne(UUID userId) {
-        return userRepository.findById(userId)
-            .orElseThrow();
+    public Optional<User> findOne(UUID userId) {
+        return userRepository.findById(userId);
     }
 
     public ShowUserDTO findOneToShow(UUID userId) {
-        User user = findOne(userId);
+        User user = findOne(userId).orElseThrow();
 
         return convertToShow(user);
     }

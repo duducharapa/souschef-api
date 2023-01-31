@@ -5,7 +5,6 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -15,29 +14,25 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "authorities")
+public class Authority {
 
-    @Id
     @GeneratedValue
+    @Id
     private UUID id;
 
-    @Column(unique = true)
-    private String email;
-
     @Column
-    @ToString.Exclude
-    private String password;
+    private String name;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<Authority> authorities;
+    @ManyToOne
+    private User user;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        User user = (User) o;
-        return id != null && Objects.equals(id, user.id);
+        Authority authority = (Authority) o;
+        return id != null && Objects.equals(id, authority.id);
     }
 
     @Override
