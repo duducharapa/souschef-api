@@ -13,11 +13,16 @@ public class WebAppSecurity {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        // Security configs
+        http.csrf().disable();
+
+        // Authentication and authorization configs
+        http.httpBasic();
+
+        // Endpoint access configs
         http
-            .csrf().disable()
-            .authorizeRequests((auth) -> auth.antMatchers(HttpMethod.POST, "/users").permitAll())
-            .authorizeRequests((auth) -> auth.anyRequest().authenticated())
-            .httpBasic();
+            .authorizeRequests((auth) -> auth.mvcMatchers(HttpMethod.POST, "/users").permitAll())
+            .authorizeRequests((auth) -> auth.anyRequest().authenticated());
 
         return http.build();
     }
