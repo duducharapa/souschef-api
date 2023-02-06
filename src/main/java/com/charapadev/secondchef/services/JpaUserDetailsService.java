@@ -1,5 +1,6 @@
-package com.charapadev.secondchef.configs;
+package com.charapadev.secondchef.services;
 
+import com.charapadev.secondchef.configs.security.CustomUserDetails;
 import com.charapadev.secondchef.models.User;
 import com.charapadev.secondchef.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

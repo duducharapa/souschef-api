@@ -1,4 +1,4 @@
-package com.charapadev.secondchef.configs;
+package com.charapadev.secondchef.configs.security;
 
 import com.charapadev.secondchef.models.User;
 import lombok.AllArgsConstructor;

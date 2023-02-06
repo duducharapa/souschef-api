@@ -1,4 +1,4 @@
-package com.charapadev.secondchef.configs;
+package com.charapadev.secondchef.configs.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
