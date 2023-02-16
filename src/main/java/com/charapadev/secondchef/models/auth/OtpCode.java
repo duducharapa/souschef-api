@@ -1,12 +1,10 @@
-package com.charapadev.secondchef.models;
+package com.charapadev.secondchef.models.auth;
 
-import com.charapadev.secondchef.models.auth.Authority;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -16,29 +14,22 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "otp_codes")
+public class OtpCode {
 
-    @Id
     @GeneratedValue
+    @Id
     private UUID id;
 
-    @Column(unique = true)
-    private String email;
-
     @Column
-    @ToString.Exclude
-    private String password;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<Authority> authorities;
+    private Integer code;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        User user = (User) o;
-        return id != null && Objects.equals(id, user.id);
+        OtpCode otpCode = (OtpCode) o;
+        return id != null && Objects.equals(id, otpCode.id);
     }
 
     @Override

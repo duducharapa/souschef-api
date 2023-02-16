@@ -1,6 +1,8 @@
 package com.charapadev.secondchef.configs.security.providers;
 
 import com.charapadev.secondchef.configs.security.authentications.OtpAuthentication;
+import com.charapadev.secondchef.services.OtpService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -10,14 +12,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class OtpAuthenticationProvider implements AuthenticationProvider {
 
+    @Autowired
+    private OtpService otpService;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
-        String code = String.valueOf(authentication.getCredentials());
+        Integer code = Integer.parseInt(
+            String.valueOf(authentication.getCredentials())
+        );
 
-        boolean result = true;
+        boolean correctCode = otpService.findOne(code).isPresent();
 
-        if (result) {
+        if (correctCode) {
             return new OtpAuthentication(username, code);
         } else {
             throw new BadCredentialsException("Bad credentials.");

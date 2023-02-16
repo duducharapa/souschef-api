@@ -1,5 +1,6 @@
-package com.charapadev.secondchef.models;
+package com.charapadev.secondchef.models.auth;
 
+import com.charapadev.secondchef.models.User;
 import lombok.*;
 import org.hibernate.Hibernate;
 

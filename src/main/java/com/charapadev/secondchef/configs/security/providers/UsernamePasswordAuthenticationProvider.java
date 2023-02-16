@@ -3,6 +3,7 @@ package com.charapadev.secondchef.configs.security.providers;
 import com.charapadev.secondchef.configs.security.CustomUserDetails;
 import com.charapadev.secondchef.services.JpaUserDetailsService;
 import com.charapadev.secondchef.configs.security.authentications.UsernamePasswordAuthentication;
+import com.charapadev.secondchef.services.OtpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,6 +21,9 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
     @Autowired
     private JpaUserDetailsService userDetailsService;
 
+    @Autowired
+    private OtpService otpService;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
@@ -29,6 +33,9 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
         boolean isSamePassword = passwordMatches(password, userFound.getPassword());
 
         if (isSamePassword) {
+            // Generate the otp code for next authentication step
+            otpService.create();
+
             return new UsernamePasswordAuthentication(username, password);
         } else {
             throw new BadCredentialsException("Bad credentials.");
