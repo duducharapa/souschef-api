@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -48,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         checkNullableParameters(request, response, filterChain);
 
-        String jwtToken = request.getHeader("Authorization");
+        String jwtToken = extractJwtFromHeader(request.getHeader("Authorization"));
         SecretKey key = Keys.hmacShaKeyFor(jwtKey.getBytes(StandardCharsets.UTF_8));
 
         // Get the roles from the user extracted from JWT
@@ -97,6 +98,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (response == null || request == null || chain == null) {
             throw new RuntimeException("Some of the parameters on doFilterInternal is null");
         }
+    }
+
+    private String extractJwtFromHeader(String header) throws BadCredentialsException {
+        String BEARER_PREFIX = "Bearer ";
+
+        if (header == null) {
+            throw new BadCredentialsException("Token not provided in Authorization header!");
+        }
+
+        if (!header.startsWith(BEARER_PREFIX)) {
+            throw new BadCredentialsException("The token provided is not a Bearer token!");
+        }
+
+        return header.substring(BEARER_PREFIX.length());
     }
 
 }
