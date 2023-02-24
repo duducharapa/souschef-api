@@ -72,10 +72,11 @@ public class InitialAuthenticationFilter extends OncePerRequestFilter {
      * 
      * @param request The servlet request object.
      * @param response The servlet response object.
+     * @throws RuntimeException If any of parameters is null.
      */
     private void checkNullableParameters(HttpServletRequest request, HttpServletResponse response) {
         if (response == null || request == null) {
-            throw new RuntimeException("Some of the parameters of doFilterInternal is null");
+            throw new RuntimeException("Some of the parameters on doFilterInternal is null");
         }
     }
 

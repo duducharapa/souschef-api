@@ -1,7 +1,6 @@
 package com.charapadev.secondchef.configs.security;
 
 import com.charapadev.secondchef.models.User;
-import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,14 +8,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
-public class CustomUserDetails implements UserDetails {
+/**
+ * Record that implements the {@link UserDetails UserDetails} interface.
+ * <p>
+ * This record wraps the {@link User user} entity  from business model to use on Spring Security workflow.
+ *
+ * @param user The user entity instance to wrap.
+ */
 
-    private final User user;
-
-    public final User getUser() {
-        return user;
-    }
+public record CustomUserDetails(User user) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

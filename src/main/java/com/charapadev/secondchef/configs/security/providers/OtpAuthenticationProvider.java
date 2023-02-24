@@ -9,6 +9,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
+/**
+ * Provider that validates the second step of authentication using the designed instance.
+ * <p>
+ * Here, the user provides the username and OTP code to be validated and proceed with JWT token generation.
+ *
+ * @see OtpAuthentication Otp Authentication.
+ */
+
 @Component
 public class OtpAuthenticationProvider implements AuthenticationProvider {
 
