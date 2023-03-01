@@ -4,7 +4,6 @@ import com.charapadev.secondchef.dtos.CreateUserDTO;
 import com.charapadev.secondchef.dtos.ShowUserDTO;
 import com.charapadev.secondchef.models.User;
 import com.charapadev.secondchef.repositories.UserRepository;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,20 +11,36 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Service used to manipulate the {@link User user} instances.
+ * <p>
+ * The manipulation of users here is different from manipulation related to authorization/authentication provided
+ * on Spring Security.
+ */
+
 @Service
 @Slf4j(topic = "User service")
-@AllArgsConstructor
 @Transactional
 public class UserService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Checks if a {@link User user} is unique.
+     * <p>
+     * To be considered unique, a user MUST have exclusives ID and NAME.
+     *
+     * @param user The user to check.
+     * @throws RuntimeException If the user already exists.
+     */
     private void isUnique(User user) throws RuntimeException {
         boolean userAlreadyExists = userRepository.existsByEmail(user.getEmail());
 
@@ -34,6 +49,13 @@ public class UserService {
         }
     }
 
+    /**
+     * Registers a new {@link User user} on application.
+     *
+     * @param createDTO The creation information.
+     * @return The created user.
+     * @see CreateUserDTO Creation user schema.
+     */
     public ShowUserDTO create(CreateUserDTO createDTO) {
         String encodedPass = passwordEncoder.encode(createDTO.password());
 
@@ -50,6 +72,11 @@ public class UserService {
         return convertToShow(userToCreate);
     }
 
+    /**
+     * Searches all the {@link User users} registered.
+     *
+     * @return The list of users.
+     */
     public List<ShowUserDTO> findAll() {
         List<User> users = userRepository.findAll();
 
@@ -58,16 +85,41 @@ public class UserService {
             .toList();
     }
 
+    /**
+     * Searches an unique {@link User user} using the given ID.
+     *
+     * @param userId The user ID.
+     * @return The code inside an Optional instance.
+     *
+     * @see Optional Optional specification.
+     */
     public Optional<User> findOne(UUID userId) {
         return userRepository.findById(userId);
     }
 
-    public ShowUserDTO findOneToShow(UUID userId) {
+    /**
+     * Searches and returns a shorted instance of {@link User user} using the given ID.
+     * <p>
+     * his method has the same purpose of {@link #findOne(UUID) findOne method}, but clear the data of recipe before return.
+     *
+     * @param userId The user ID.
+     * @return The shorted user.
+     * @throws NoSuchElementException If none user is found.
+     */
+    public ShowUserDTO findOneToShow(UUID userId) throws NoSuchElementException {
         User user = findOne(userId).orElseThrow();
 
         return convertToShow(user);
     }
 
+    /**
+     * Converts a given {@link User user} to an {@link ShowUserDTO exposable DTO}.
+     * <p>
+     * This method is used to prevent external users to see private or unwanted data about a user.
+     *
+     * @param user The user to convert.
+     * @return The converted user.
+     */
     public ShowUserDTO convertToShow(User user) {
         return new ShowUserDTO(
             user.getId(),
@@ -75,6 +127,11 @@ public class UserService {
         );
     }
 
+    /**
+     * Removes an instance of {@link User user} from application using the given ID.
+     *
+     * @param userId The user ID.
+     */
     public void delete(UUID userId) {
         userRepository.deleteById(userId);
     }

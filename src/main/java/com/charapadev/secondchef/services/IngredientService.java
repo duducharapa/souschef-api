@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Service used to manipulate the {@link Ingredient ingredient instances}.
+ */
+
 @Service
 @Slf4j(topic = "Ingredient service")
 @AllArgsConstructor
@@ -23,10 +27,30 @@ public class IngredientService {
     @Autowired
     private ProductService productService;
 
+    /**
+     * Create the {@link Product product} that will be related to this specific ingredient.
+     * <p>
+     * This method uses the same DTO as input used on ingredient creation because these entities has the same information
+     * to be provided on creation.
+     *
+     * @param createDTO The creation information.
+     * @return The created product.
+     * @see Product Product schema.
+     * @see CreateIngredientDTO Create product/ingredient schema.
+     */
     private Product createRelatedProduct(CreateIngredientDTO createDTO) {
         return productService.create(createDTO);
     }
 
+    /**
+     * Create an {@link Ingredient ingredient} and the {@link Product product} related.
+     *
+     * @param createDTO The creation information.
+     * @param recipe The recipe to link on ingredient.
+     * @return The created ingredient.
+     *
+     * @see CreateIngredientDTO Create ingredient schema.
+     */
     public Ingredient create(CreateIngredientDTO createDTO, Recipe recipe) {
         Product productRelated = createRelatedProduct(createDTO);
 
@@ -42,6 +66,14 @@ public class IngredientService {
         return ingredientToCreate;
     }
 
+    /**
+     * Converts a given {@link Ingredient ingredient} to an {@link ShowIngredientDTO exposable DTO}.
+     * <p>
+     *  This conversion removes the overload of attributes related to link between entities that are also stored.
+     *
+     * @param ingredient The ingredient to convert.
+     * @return The converted ingredient.
+     */
     public ShowIngredientDTO convertToShow(Ingredient ingredient) {
         return new ShowIngredientDTO(
             ingredient.getId(),

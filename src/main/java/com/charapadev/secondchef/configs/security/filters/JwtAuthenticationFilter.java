@@ -78,8 +78,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         boolean isLoginRoute = path.equals(Routes.LOGIN_PATH);
         boolean isRegisterRoute = path.equals("/users") && method.equals("POST");
+        boolean isDocsPath = path.equals("/docs") || path.equals("/open-api");
 
-        return isLoginRoute || isRegisterRoute;
+        return isLoginRoute || isRegisterRoute || isDocsPath;
     }
 
     /**

@@ -3,19 +3,30 @@ package com.charapadev.secondchef.services;
 import com.charapadev.secondchef.dtos.CreateIngredientDTO;
 import com.charapadev.secondchef.models.Product;
 import com.charapadev.secondchef.repositories.ProductRepository;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Service used to manipulate the {@link Product product} instances.
+ */
+
 @Service
 @Slf4j(topic = "Product service")
-@AllArgsConstructor
 @Transactional
 public class ProductService {
 
-    private final ProductRepository productRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
+    /**
+     * Creates an instance of {@link Product product}.
+     *
+     * @param createDTO The creation information.
+     * @return The created product.
+     * @see CreateIngredientDTO Creation product schema.
+     */
     public Product create(CreateIngredientDTO createDTO) {
         Product productToCreate = Product.builder()
             .name(createDTO.name())

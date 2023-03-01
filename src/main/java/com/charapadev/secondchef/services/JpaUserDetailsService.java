@@ -8,6 +8,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of {@link UserDetailsService} used to retrieve users data by the given email on
+ * authentication/authorization flows.
+ */
+
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
 
