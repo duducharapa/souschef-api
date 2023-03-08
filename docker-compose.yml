@@ -1,0 +1,30 @@
+version: '3.6'
+services:
+  database:
+    image: postgres
+    container_name: souschef-db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: souschef
+    ports:
+      - "5432:5432"
+    networks:
+      - data
+  app:
+    image: charapadev/sous-chef
+    container_name: souschef-api
+    command: ["java", "-jar", "/app.jar"]
+    ports:
+      - "8080:8080"
+    working_dir: /usr/src/app
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/souschef
+    depends_on:
+      - database
+    networks:
+      - data
+      - backend
+networks:
+  data:
+  backend:
