@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+import java.util.UUID;
+
 /**
  * Service used to manipulate the {@link Product product} instances.
  */
@@ -36,6 +39,18 @@ public class ProductService {
         log.info("Created a product: {}", productToCreate);
 
         return productToCreate;
+    }
+
+    /**
+     * Searches an unique {@link Product product} using the given ID.
+     *
+     * @param productId The product ID.
+     * @return The product found inside an Optional instance.
+     *
+     * @see Optional Optional specification.
+     */
+    public Optional<Product> findOne(UUID productId) {
+        return productRepository.findById(productId);
     }
 
 }

@@ -6,6 +6,7 @@ import com.charapadev.secondchef.models.User;
 import com.charapadev.secondchef.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,7 +90,7 @@ public class UserService {
      * Searches an unique {@link User user} using the given ID.
      *
      * @param userId The user ID.
-     * @return The code inside an Optional instance.
+     * @return The user found inside an Optional instance.
      *
      * @see Optional Optional specification.
      */
@@ -100,7 +101,7 @@ public class UserService {
     /**
      * Searches and returns a shorted instance of {@link User user} using the given ID.
      * <p>
-     * his method has the same purpose of {@link #findOne(UUID) findOne method}, but clear the data of recipe before return.
+     * This method has the same purpose of {@link #findOne(UUID) findOne method}, but clear the data of recipe before return.
      *
      * @param userId The user ID.
      * @return The shorted user.
@@ -110,6 +111,23 @@ public class UserService {
         User user = findOne(userId).orElseThrow();
 
         return convertToShow(user);
+    }
+
+    /**
+     * Searches and returns an {@link User user} using the given email address.
+     * <p>
+     * This method has the same purpose of {@link #findOne(UUID)}, but differs on criteria to search a user.
+     * It's useful because the username of {@link Authentication Authentication} object is the unique email.
+     * Then, it works as a shortcut to access the authenticated user.
+     *
+     * @param email The user email to search.
+     * @return The user found.
+     * @throws NoSuchElementException If no user was found.
+     * @see Authentication Spring Security Authentication specification.
+     */
+    public User findByEmail(String email) throws NoSuchElementException {
+        return userRepository.findByEmail(email)
+            .orElseThrow();
     }
 
     /**

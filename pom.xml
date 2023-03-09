@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.charapadev</groupId>
-	<artifactId>second-chef</artifactId>
+	<artifactId>sous-chef</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>second-chef</name>
-	<description>API do project Second Chef desenvolvido por Eduardo Charapa</description>
+	<name>sous-chef</name>
+	<description>API do project Sous Chef desenvolvido por Eduardo Charapa</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
