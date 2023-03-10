@@ -7,6 +7,6 @@ public record ShowItemDTO(
 
     String name,
 
-    int quantity
+    long quantity
 ) {
 }

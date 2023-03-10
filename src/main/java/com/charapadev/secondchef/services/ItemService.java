@@ -3,6 +3,7 @@ package com.charapadev.secondchef.services;
 import com.charapadev.secondchef.dtos.CreateItemDTO;
 import com.charapadev.secondchef.dtos.ShowItemDTO;
 import com.charapadev.secondchef.dtos.UpdateItemDTO;
+import com.charapadev.secondchef.models.Ingredient;
 import com.charapadev.secondchef.models.Item;
 import com.charapadev.secondchef.models.Product;
 import com.charapadev.secondchef.models.User;
@@ -37,10 +38,16 @@ public class ItemService {
      * @param ownerEmail The owner email.
      * @return The list of items owned.
      */
-    public List<ShowItemDTO> list(String ownerEmail) {
-        return itemRepository.findAllByOwner(ownerEmail).stream()
+    public List<ShowItemDTO> listToShow(String ownerEmail) {
+        List<Item> itemsOwned = list(ownerEmail);
+
+        return itemsOwned.stream()
             .map(this::convertToShow)
             .toList();
+    }
+
+    public List<Item> list(String ownerEmail) {
+        return itemRepository.findAllByOwner(ownerEmail);
     }
 
     /**
@@ -99,6 +106,27 @@ public class ItemService {
             item.getProduct().getName(),
             item.getQuantity()
         );
+    }
+
+    /**
+     * Checks if a specific {@link User user} has some {@link Item item} enough to a given {@link Ingredient ingredient}.
+     * <p>
+     * To be considered enough, the item must have the quantity equal or greater than ingredient's quantity.
+     * If cannot found an item linked to the product ID given, automatically will be returned a FALSE value.
+     *
+     * @param ingredientQuantity The ingredient quantity.
+     * @param productId The product ID.
+     * @param userEmail The user email address.
+     * @return If the quantity of the item found is enough.
+     */
+    public boolean hasQuantityEnough(long ingredientQuantity, UUID productId, String userEmail) {
+        try {
+            long itemQuantity = itemRepository.getQuantityByProductId(productId, userEmail);
+
+            return itemQuantity >= ingredientQuantity;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
 }

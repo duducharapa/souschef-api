@@ -41,7 +41,7 @@ public class ItemController {
      */
     @GetMapping
     public ResponseEntity<List<ShowItemDTO>> list(Authentication auth) {
-        List<ShowItemDTO> items = itemService.list(auth.getName());
+        List<ShowItemDTO> items = itemService.listToShow(auth.getName());
 
         return ResponseEntity.ok(items);
     }

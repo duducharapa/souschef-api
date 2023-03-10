@@ -23,12 +23,14 @@ public class Item {
     private UUID id;
 
     @Column
-    private int quantity;
+    private long quantity;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @Override

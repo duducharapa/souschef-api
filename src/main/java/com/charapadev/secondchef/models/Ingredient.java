@@ -24,6 +24,7 @@ public class Ingredient {
     @Column
     private long quantity;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;

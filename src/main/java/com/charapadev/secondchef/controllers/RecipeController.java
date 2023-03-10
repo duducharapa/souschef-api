@@ -7,7 +7,7 @@ import com.charapadev.secondchef.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,7 +20,7 @@ import java.util.UUID;
  * To access any resource here, the user must be fully authenticated.
  */
 
-@Controller
+@RestController
 @RequestMapping("/recipes")
 public class RecipeController {
 
@@ -82,6 +82,19 @@ public class RecipeController {
         recipeService.delete(recipeId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Lists the {@link Recipe recipes} available to cook by a specific user.
+     *
+     * @return The 200(OK) HTTP code with the list of recipes available.
+     * @see <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/200">HTTP 200 code specification.</a>
+     */
+    @GetMapping("/available")
+    public ResponseEntity<List<ShowRecipeDTO>> listAvailable(Authentication auth) {
+        List<ShowRecipeDTO> recipesAvailable = recipeService.listAvailable(auth.getName());
+
+        return ResponseEntity.ok(recipesAvailable);
     }
 
 }

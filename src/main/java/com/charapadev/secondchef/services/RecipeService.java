@@ -5,6 +5,7 @@ import com.charapadev.secondchef.dtos.CreateRecipeDTO;
 import com.charapadev.secondchef.dtos.ShowIngredientDTO;
 import com.charapadev.secondchef.dtos.ShowRecipeDTO;
 import com.charapadev.secondchef.models.Ingredient;
+import com.charapadev.secondchef.models.Item;
 import com.charapadev.secondchef.models.Recipe;
 import com.charapadev.secondchef.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Service used to manipulate the {@link Recipe recipe} instances and trigger other service methods like
@@ -33,6 +35,9 @@ public class RecipeService {
 
     @Autowired
     private IngredientService ingredientService;
+
+    @Autowired
+    private ItemService itemService;
 
     /**
      * Triggers the creation of some {@link Ingredient ingredients} related to a {@link Recipe recipe}.
@@ -161,6 +166,53 @@ public class RecipeService {
      */
     public void delete(UUID recipeId) {
         recipeRepository.deleteById(recipeId);
+    }
+
+    /**
+     * Lists all the {@link Recipe recipes} available to a user cook.
+     * <p>
+     * First, the repository catches the recipes that has at least ONE ingredient in common with user {@link Item items}.
+     * After this, other function is called to check the ingredient and items quantities.
+     *
+     * @param userEmail The user email address.
+     * @return The list of recipes available.
+     * @see #filterAvailableRecipes(Stream, String)  Filter recipes function.
+     */
+    public List<ShowRecipeDTO> listAvailable(String userEmail) {
+        Stream<Recipe> recipesPossible = recipeRepository.findRecipesPossibleForUser(userEmail);
+
+        return filterAvailableRecipes(recipesPossible, userEmail)
+            .map(this::convertToShow)
+            .toList();
+    }
+
+    /**
+     * Checks and filters the {@link Recipe recipes} possible to cook.
+     * <p>
+     * This method checks if a recipe can be cooked using the quantity of each {@link Ingredient ingredient}.
+     * If the user given has a specific {@link Item item} related to same product as the ingredient and the quantity
+     * is enough, this recipe will not be filtered.
+     * <p>
+     * The specific function that checks the quantity and searches the related product can be found in
+     * {@link ItemService item service}.
+     *
+     * @param recipesPossibles The list of possible recipes.
+     * @param userEmail  The user email address.
+     * @return The list of recipes available.
+     * @see ItemService#hasQuantityEnough(long, UUID, String) Item quantity check function. 
+     */
+    private Stream<Recipe> filterAvailableRecipes(Stream<Recipe> recipesPossibles, String userEmail) {
+        return recipesPossibles.filter(recipe -> {
+            Set<Ingredient> ingredients = recipe.getIngredients();
+
+            return ingredients.stream()
+                .allMatch(ingredient -> {
+                    long ingredientQuantity = ingredient.getQuantity();
+                    UUID productRelatedID = ingredient.getProduct().getId();
+
+                    return itemService.hasQuantityEnough(ingredientQuantity, productRelatedID, userEmail);
+                });
+        });
     }
 
 }

@@ -12,4 +12,7 @@ public interface ItemRepository extends JpaRepository<Item, UUID> {
     @Query("SELECT i FROM Item i WHERE i.user.email = :ownerEmail")
     List<Item> findAllByOwner(String ownerEmail);
 
+    @Query("SELECT i.quantity FROM Item i JOIN i.product p JOIN i.user u WHERE p.id = :productId AND u.email = :userEmail")
+    long getQuantityByProductId(UUID productId, String userEmail);
+
 }
