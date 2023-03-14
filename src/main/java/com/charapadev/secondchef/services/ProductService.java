@@ -42,7 +42,7 @@ public class ProductService {
     }
 
     /**
-     * Searches an unique {@link Product product} using the given ID.
+     * Searches a unique {@link Product product} using the given ID.
      *
      * @param productId The product ID.
      * @return The product found inside an Optional instance.
@@ -51,6 +51,17 @@ public class ProductService {
      */
     public Optional<Product> findOne(UUID productId) {
         return productRepository.findById(productId);
+    }
+
+    /**
+     * Searches a unique {@link Product product} using the given name.
+     *
+     * @param productName The product name.
+     * @return The product found inside an Optional instance.
+     * @see Optional Optional specification.
+     */
+    public Optional<Product> findByName(String productName) {
+        return productRepository.findByName(productName);
     }
 
 }

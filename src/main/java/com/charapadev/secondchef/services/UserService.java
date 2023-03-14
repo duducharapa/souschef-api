@@ -74,6 +74,27 @@ public class UserService {
     }
 
     /**
+     * Searches and, if necessary, creates an {@link User user} using the given data.
+     * <p>
+     * First, the function check if the user exists by the given email on DTO provided.
+     * Based on this, the user should be created before search the rest of information about the user.
+     *
+     * @param createDTO The creation information.
+     * @return The user found or created.
+     * @see CreateUserDTO Creation user schema.
+     * @throws NoSuchElementException If none user was found when searched by email address.
+     */
+    public User findOrCreate(CreateUserDTO createDTO) throws NoSuchElementException {
+        boolean userNotExists = !userRepository.existsByEmail(createDTO.email());
+
+        if (userNotExists) {
+            create(createDTO);
+        }
+
+        return userRepository.findByEmail(createDTO.email()).orElseThrow();
+    }
+
+    /**
      * Searches all the {@link User users} registered.
      *
      * @return The list of users.
