@@ -28,7 +28,6 @@ import java.util.stream.Stream;
  */
 
 @Service
-@Transactional
 @Slf4j(topic = "Default data service")
 public class DefaultDataService {
 
@@ -89,7 +88,11 @@ public class DefaultDataService {
             List.of(bread, cheese, ham)
         );
 
-        recipeService.create(grilledCheeseDTO);
+        try {
+            recipeService.create(grilledCheeseDTO);
+        } catch (Exception ex) {
+            log.error("This recipe already exists");
+        }
     }
 
     /**
