@@ -4,15 +4,10 @@ import com.charapadev.secondchef.dtos.CreateIngredientDTO;
 import com.charapadev.secondchef.dtos.CreateItemDTO;
 import com.charapadev.secondchef.dtos.CreateRecipeDTO;
 import com.charapadev.secondchef.dtos.CreateUserDTO;
-import com.charapadev.secondchef.models.Ingredient;
-import com.charapadev.secondchef.models.Item;
-import com.charapadev.secondchef.models.Product;
-import com.charapadev.secondchef.models.Recipe;
-import com.charapadev.secondchef.models.User;
+import com.charapadev.secondchef.models.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
