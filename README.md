@@ -78,14 +78,32 @@ Você pode mudar as quantidades usando [esta rota][update-item], mas essas quant
 ### Passo 2: Buscando receitas
 O sistema já possui uma receita cadastrada que utiliza os produtos do passo anterior. Caso deseje, você também pode [criar uma nova][create-recipe].
 
-Com as quantidades padrões dos produtos, é possível fazer **1 misto quente**. Na busca, então, deve ser retornado pela API essa informação em um formato JSON:
+Com as quantidades padrões dos produtos, é possível fazer **1 misto quente**. Ao [buscar as receitas disponíveis][search-recipes], deve ser retornado as receitas em um formato JSON como o abaixo:
 
-> trecho de código
+>
+    {
+        "id": "828b87a4-c96b-4eb3-9a1c-76d8502ba62a",
+        "name": "Misto quente",
+        "ingredients": [
+            {
+                "id": "37cce9ce-fc84-447a-889d-2d32a782c616",
+                "name": "Pão",
+                "quantity": 2
+            },
+            {
+                "id": "59e435b0-93da-4d7f-8e3f-aef6f7961aa4",
+                "name": "Queijo",
+                "quantity": 1
+            },
+            {
+                "id": "ce44ee8d-f83e-47d5-a028-8ef710dbe573",
+                "name": "Presunto",
+                "quantity": 1
+            }
+        ]
+    }
 
 Feito isso, você já concluiu o fluxo principal da aplicação. Todas as outras rotas e detalhes sobre podem ser acessados na [documentação](#documentação).
-
-
-
 
 [swagger]: http://localhost:8080/swagger
 [postman]: https://www.postman.com/charapadev/workspace/sous-chef-api
@@ -96,3 +114,4 @@ Feito isso, você já concluiu o fluxo principal da aplicação. Todas as outras
 [create-recipe]: https://www.postman.com/charapadev/workspace/sous-chef-api/request/9424241-0dde94e9-c435-426c-bdf6-885ac86c381f
 [create-item]: https://www.postman.com/charapadev/workspace/sous-chef-api/request/9424241-a7b71f24-9a01-4ddb-a185-43f592759159
 [update-item]: https://www.postman.com/charapadev/workspace/sous-chef-api/request/9424241-58db107d-9f8f-461b-af0e-a294b94f4d07
+[search-recipes]: https://www.postman.com/charapadev/workspace/sous-chef-api/request/9424241-3b458cf2-6f40-4e37-9bfa-a55150020cd9
