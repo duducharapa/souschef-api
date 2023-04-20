@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * Utility class that generates the {@link OtpCode#code} used on two steps authentication.
  * <p>
- * See the authentication provider responsible of otp codes.
+ * See the authentication provider responsible for otp codes.
  *
  * @see OtpAuthenticationProvider Otp Authentication Provider.
  */
