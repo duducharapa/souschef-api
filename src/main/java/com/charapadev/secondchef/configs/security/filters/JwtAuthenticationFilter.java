@@ -76,7 +76,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getServletPath();
         String method = request.getMethod();
 
-        boolean isLoginRoute = path.equals(Routes.LOGIN_PATH);
+        boolean isLoginRoute = path.equals(Routes.LOGIN);
         boolean isRegisterRoute = path.equals("/users") && method.equals("POST");
         boolean isDocsPath = path.equals("/docs") || path.equals("/open-api");
 

@@ -63,7 +63,7 @@ public class InitialAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return !request.getServletPath().equals(Routes.LOGIN_PATH);
+        return !request.getServletPath().equals(Routes.LOGIN);
     }
 
     /**
