@@ -2,7 +2,6 @@ package com.charapadev.secondchef.dtos;
 
 import com.charapadev.secondchef.models.Ingredient;
 import com.charapadev.secondchef.models.Recipe;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -17,6 +16,6 @@ import java.util.List;
 
 public record CreateRecipeDTO(
     @NotBlank String name,
-    @Valid @Length(min = 1) List<CreateIngredientDTO> ingredients
+    @Valid List<CreateIngredientDTO> ingredients
 ) {
 }

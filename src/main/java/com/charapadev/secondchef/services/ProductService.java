@@ -42,6 +42,22 @@ public class ProductService {
     }
 
     /**
+     * Searches a {@link Product} or, if necessary, creates it using the creation data.
+     *
+     * @param createDTO The creation information.
+     * @return The product found or created.
+     */
+    public Product findOrCreate(CreateIngredientDTO createDTO) {
+        Product productFound = productRepository.findByName(createDTO.name()).orElse(null);
+
+        if (productFound == null) {
+            productFound = create(createDTO);
+        }
+
+        return productFound;
+    }
+
+    /**
      * Searches a unique {@link Product product} using the given ID.
      *
      * @param productId The product ID.

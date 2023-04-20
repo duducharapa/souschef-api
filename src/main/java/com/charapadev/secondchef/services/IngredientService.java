@@ -12,10 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Service used to manipulate the {@link Ingredient ingredient instances}.
- */
-
 @Service
 @Slf4j(topic = "Ingredient service")
 @AllArgsConstructor
@@ -28,7 +24,7 @@ public class IngredientService {
     private ProductService productService;
 
     /**
-     * Create the {@link Product product} that will be related to this specific ingredient.
+     * Creates, if necessary, the {@link Product} related to this ingredient.
      * <p>
      * This method uses the same DTO as input used on ingredient creation because these entities has the same information
      * to be provided on creation.
@@ -39,7 +35,7 @@ public class IngredientService {
      * @see CreateIngredientDTO Create product/ingredient schema.
      */
     private Product createRelatedProduct(CreateIngredientDTO createDTO) {
-        return productService.create(createDTO);
+        return productService.findOrCreate(createDTO);
     }
 
     /**
