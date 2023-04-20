@@ -7,6 +7,15 @@ import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Represents the {@link Product} owned by a specific {@link User}.
+ * <p>
+ * Like {@link Ingredient} entity, this also works as an intermediary and has the same "specific values" reason to exist.
+ * <p>
+ * See the ingredient reference to know about.
+ *
+ * @see Ingredient Ingredient reference.
+ */
 
 @Getter
 @Setter
@@ -18,17 +27,29 @@ import java.util.UUID;
 @Table(name = "items")
 public class Item {
 
+    /**
+     * The item reference identifier.
+     */
     @Id
     @GeneratedValue
     private UUID id;
 
+    /**
+     * The quantity of this item owner by user.
+     */
     @Column
     private long quantity;
 
+    /**
+     * The user that owns this item.
+     */
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    /**
+     * The product that belongs this item.
+     */
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

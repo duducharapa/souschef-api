@@ -7,6 +7,13 @@ import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Represents the generic link between {@link Item Items} with {@link Ingredient Ingredients}.
+ * <p>
+ * These two classes refers to same "behavior" in real world: the items are the products which user already has in your house.
+ * The ingredients are products which recipe requires to be cooked.
+ */
+
 @Getter
 @Setter
 @ToString
@@ -17,10 +24,18 @@ import java.util.UUID;
 @Table(name = "products")
 public class Product {
 
+    /**
+     * The product reference identifier.
+     */
     @Id
     @GeneratedValue
     private UUID id;
 
+    /**
+     * The product name.
+     * <p>
+     * This name will be extended to items and ingredients.
+     */
     @Column
     private String name;
 

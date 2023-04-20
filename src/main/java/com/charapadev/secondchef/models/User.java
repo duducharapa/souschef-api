@@ -9,6 +9,13 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Represents a person that manipulate resources inside the application.
+ * <p>
+ * To manipulate any resource, the user must be authenticated and has enough {@link Authority Authorities}
+ * that vary from resource to resource.
+ */
+
 @Getter
 @Setter
 @Builder
@@ -19,17 +26,29 @@ import java.util.UUID;
 @Table(name = "users")
 public class User {
 
+    /**
+     * The user reference identifier.
+     */
     @Id
     @GeneratedValue
     private UUID id;
 
+    /**
+     * The user email.
+     */
     @Column(unique = true)
     private String email;
 
+    /**
+     * The user password.
+     */
     @Column
     @ToString.Exclude
     private String password;
 
+    /**
+     * The authorities this user have.
+     */
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Authority> authorities;
 

@@ -8,6 +8,11 @@ import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Represents the authority concept based on Spring Security, where the {@link User User} has a lot of privileges
+ * and your access to some resources or actions are based on it.
+ */
+
 @Getter
 @Setter
 @Builder
@@ -18,13 +23,22 @@ import java.util.UUID;
 @Table(name = "authorities")
 public class Authority {
 
+    /**
+     * The authority reference identifier.
+     */
     @GeneratedValue
     @Id
     private UUID id;
 
+    /**
+     * The authority name.
+     */
     @Column
     private String name;
 
+    /**
+     * The user that has this authority.
+     */
     @ManyToOne
     private User user;
 

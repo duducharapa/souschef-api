@@ -7,6 +7,15 @@ import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Represents one {@link Product} necessary to cook a {@link Recipe}.
+ * <p>
+ * This class works as an intermediary between recipes and products.
+ * <p>
+ * Instead a recipe depends on directly from a product, the ingredients are created to specify values like
+ * quantity and measures.
+ */
+
 @Getter
 @Setter
 @Builder
@@ -17,18 +26,30 @@ import java.util.UUID;
 @Table(name = "ingredients")
 public class Ingredient {
 
+    /**
+     * The ingredient reference identifier.
+     */
     @Id
     @GeneratedValue
     private UUID id;
 
+    /**
+     * The quantity of the ingredient to fulfill a specific recipe.
+     */
     @Column
     private long quantity;
 
+    /**
+     * The recipe related to this ingredient.
+     */
     @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
+    /**
+     * The specific product related to this ingredient.
+     */
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
