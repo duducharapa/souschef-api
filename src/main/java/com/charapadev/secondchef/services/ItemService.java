@@ -61,6 +61,12 @@ public class ItemService {
     public ShowItemDTO create(CreateItemDTO createDTO, User owner) throws NoSuchElementException {
         Product productRelated = productService.findOne(createDTO.productId())
             .orElseThrow();
+        boolean productAlreadyLinked = itemRepository.findByProductIdAndOwner(createDTO.productId(), owner.getEmail())
+            .isPresent();
+
+        if (productAlreadyLinked) {
+            throw new RuntimeException("Já existe um item vinculado a esse produto");
+        }
 
         Item itemToCreate = Item.builder()
             .quantity(createDTO.quantity())
@@ -121,7 +127,8 @@ public class ItemService {
      */
     public boolean hasQuantityEnough(long ingredientQuantity, UUID productId, String userEmail) {
         try {
-            long itemQuantity = itemRepository.getQuantityByProductId(productId, userEmail);
+            long itemQuantity = itemRepository.findByProductIdAndOwner(productId, userEmail)
+                .orElseThrow().getQuantity();
 
             return itemQuantity >= ingredientQuantity;
         } catch (Exception ex) {

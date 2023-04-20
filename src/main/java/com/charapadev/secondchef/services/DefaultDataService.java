@@ -108,7 +108,13 @@ public class DefaultDataService {
         CreateItemDTO ham = new CreateItemDTO(hamId, 1);
         CreateItemDTO bread = new CreateItemDTO(breadId, 4);
 
-        Stream.of(bread, cheese, ham).forEach(item -> itemService.create(item, owner));
+        Stream.of(bread, cheese, ham).forEach(item -> {
+            try {
+                itemService.create(item, owner);
+            } catch (Exception ex) {
+                log.error("This item already exists");
+            }
+        });
     }
 
 }
